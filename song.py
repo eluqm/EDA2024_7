@@ -10,9 +10,15 @@ class Song:
         
     def convertTime(self, miliSeconds):
         total_seconds = miliSeconds // 1000 # Dividiendo para obtener un entero
-        minutes = total_seconds // 60
-        seconds = total_seconds % 60
-        return f"{minutes}:{seconds:02d}" # 02d para usar dos digitos y de ser un digito completa con cero adelante
+        if total_seconds > 3599:
+            hours = total_seconds // 3600
+            minutes = (total_seconds - hours * 3600) // 60
+            seconds = total_seconds % 60
+            return f"{hours}:{minutes:02d}:{seconds:02d}" # 02d para usar dos digitos y de ser un digito completa con cero adelante
+        else:
+            minutes = total_seconds // 60
+            seconds = total_seconds % 60
+            return f"{minutes}:{seconds:02d}"
         
         
     def __str__(self):
@@ -20,3 +26,5 @@ class Song:
         
 cancion = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Give Up", "acoustic", 2012, 68, 240166)
 print(cancion)
+cancion1 = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Give Up", "acoustic", 2012, 68, 3725000)
+print(cancion1)
