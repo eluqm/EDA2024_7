@@ -19,7 +19,27 @@ class Song:
             minutes = total_seconds // 60
             seconds = total_seconds % 60
             return f"{minutes}:{seconds:02d}"
+    
+    def getSong_id(self):
+        return self.song_id
         
+    def getSong_name(self):
+        return self.song_name
+    
+    def getAuthor(self):
+        return self.author
+    
+    def getGenre(self):
+        return self.genre
+        
+    def getYear(self):
+        return self.year
+        
+    def getPopularity(self):
+        return self.popularity
+        
+    def getDuration(self):
+        return self.duration
         
     def __str__(self):
         return f"{self.song_name}, {self.author}, {self.year}, {self.duration}"
@@ -28,3 +48,5 @@ cancion = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Gi
 print(cancion)
 cancion1 = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Give Up", "acoustic", 2012, 68, 3725000)
 print(cancion1)
+
+print(cancion1.getDuration())
