@@ -9,7 +9,7 @@ class Song:
         self.duration = self.convertTime(duration)
         
     def convertTime(self, miliSeconds):
-        total_seconds = miliSeconds // 1000 # Dividiendo para obtener un entero
+        total_seconds = int(miliSeconds) // 1000 # Dividiendo para obtener un entero
         if total_seconds > 3599:
             hours = total_seconds // 3600
             minutes = (total_seconds - hours * 3600) // 60
@@ -42,11 +42,4 @@ class Song:
         return self.duration
         
     def __str__(self):
-        return f"{self.song_name}, {self.author}, {self.year}, {self.duration}"
-        
-cancion = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Give Up", "acoustic", 2012, 68, 240166)
-print(cancion)
-cancion1 = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz,I Won't Give Up", "acoustic", 2012, 68, 3725000)
-print(cancion1)
-
-print(cancion1.getDuration())
+        return f"{self.song_id}, {self.song_name}, {self.author}, {self.year}, {self.duration}"
