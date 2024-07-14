@@ -29,4 +29,10 @@ class Trie:
         else:
             return False, []
         
-    
+    def contains(self, prefix):
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return False
+            node = node.children[char]
+        return True
