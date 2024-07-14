@@ -1,4 +1,5 @@
 from song import Song
+import dill as pickle
 
 class TrieNode:
     def __init__(self):
@@ -36,7 +37,7 @@ class Trie:
             if node.endWord:
                 dats = ""
                 for dat in node.data:
-                    dats += f"{dat.getSong_name()}, {dat.getAuthor()}, {dat.getYear()}, {dat.getDuration()}\n"
+                    dats += f"{dat.getSong_id()}, {dat.getSong_name()}, {dat.getAuthor()}, {dat.getYear()}, {dat.getDuration()}\n"
                 return dats
         return "No se encontraron resultados"
         
@@ -48,6 +49,15 @@ class Trie:
             node = node.children[char]
         return True
         
+    def saveFile(self, file):
+        with open(file, 'wb') as f:
+            pickle.dump(self, f)
+            
+    def loadFile(self, file):
+        with open(file, 'rb') as f:
+            return pickle.load(f)
+
+"""    
 cancion = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz", "acoustic", 2012, 68, 240166)
 print(cancion)
 cancion1 = Song("53QF56cjZA9RTuuMZDrS44","I Won't Give Up","Michael Jackson", "pop", 2012, 68, 3725000)
@@ -61,3 +71,4 @@ rep.insert(cancion1.getSong_name(), cancion1)
 rep.insert(cancion2.getSong_name(), cancion2)
 
 print(rep.getSong("I Won't Give Up"))
+"""
