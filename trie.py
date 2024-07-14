@@ -2,10 +2,20 @@ class TrieNode:
     def __init__(self):
         self.children = {}
         self.endWord = False
-        self.data = None
+        self.data = []
         
 class Trie:
     def __init__(self):
         self.root = TrieNode()
         
+    def insert(self, word, data)
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.endWord = True
+        if data is not None:
+            node.data.append(info)
+    
     
