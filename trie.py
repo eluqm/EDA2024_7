@@ -18,4 +18,15 @@ class Trie:
         if data is not None:
             node.data.append(info)
     
+    def search(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children[]
+                return False, []
+            node = node.children[char]
+        if node.endWord:
+            return True, node.data
+        else:
+            return False, []
+        
     
