@@ -25,6 +25,36 @@ class LinkedList:
             self.tail.next = self.head
         self.size += 1
     
+    def add_song_at_position(self, song, position):
+        if position < 0 or position > self.size:
+            raise IndexError("Invalid position")
+
+        new_node = Node(song)
+        if position == 0:
+            if not self.head:
+                self.head = new_node
+                self.tail = new_node
+                self.head.prev = self.head
+                self.head.next = self.head
+            else:
+                new_node.next = self.head
+                new_node.prev = self.tail
+                self.head.prev = new_node
+                self.tail.next = new_node
+                self.head = new_node
+        elif position == self.size:
+            self.add_song(song)
+        else:
+            current = self.head
+            for _ in range(position):
+                current = current.next
+            new_node.next = current
+            new_node.prev = current.prev
+            current.prev.next = new_node
+            current.prev = new_node
+
+        self.size += 1
+    
     def remove_song(self, song):
         if self.head:
             current = self.head
@@ -47,9 +77,9 @@ class LinkedList:
     
     def change_order(self, current_position, new_position):
         if current_position < 0 or current_position >= self.size or new_position < 0 or new_position >= self.size:
-            return False  # Invalid positions
+            return False
         if current_position == new_position:
-            return True  # No need to change
+            return True
 
         current = self.head
         for _ in range(current_position):
@@ -81,3 +111,14 @@ class LinkedList:
         
         self.tail = self.head.prev
         return True
+
+    # optimizar O(n^2)
+    def random_play(self):
+        import random
+        random_playlist = LinkedList()
+        current = self.head
+        for _ in range(self.size):
+            num_random = random.randint(0, random_playlist.size)
+            random_playlist.add_song_at_position(current.song, num_random)
+            current = current.next
+        return random_playlist
