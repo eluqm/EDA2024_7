@@ -8,7 +8,7 @@ class Trie:
     def __init__(self):
         self.root = TrieNode()
         
-    def insert(self, word, data)
+    def insert(self, word, data):
         node = self.root
         for char in word:
             if char not in node.children:
@@ -16,12 +16,12 @@ class Trie:
             node = node.children[char]
         node.endWord = True
         if data is not None:
-            node.data.append(info)
+            node.data.append(data)
     
     def search(self, word):
         node = self.root
         for char in word:
-            if char not in node.children[]
+            if char not in node.children:
                 return False, []
             node = node.children[char]
         if node.endWord:
@@ -36,3 +36,11 @@ class Trie:
                 return False
             node = node.children[char]
         return True
+        
+trie = Trie()
+trie.insert("hello", 12)
+trie.insert("hello", 23)
+trie.insert("hey", 1)
+
+print(trie.search("hello"))
+print(trie.contains("he"))
