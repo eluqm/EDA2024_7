@@ -1,4 +1,4 @@
-import random
+# import random
 
 class NodeBPlusTree(object):
 
@@ -6,6 +6,12 @@ class NodeBPlusTree(object):
         self.keys: list = []
         self.values: list[NodeBPlusTree] = []
         self.parent: NodeBPlusTree = parent
+
+    def index(self, key):
+        for i, item in enumerate(self.keys):
+            if key < item:
+                return i
+        return len(self.keys)
 
 
 class LeafBPlusTree(NodeBPlusTree):
