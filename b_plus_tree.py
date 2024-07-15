@@ -23,6 +23,10 @@ class NodeBPlusTree(object):
             self.values.pop(i)
         self.values[i:i] = value
 
+    def __delitem__(self, key):
+        i = self.index(key)
+        del self.values[i]
+        del self.keys[i]
 
 class LeafBPlusTree(NodeBPlusTree):
 
