@@ -2,8 +2,8 @@ import csv
 import sys
 from trie import Trie
 from song import Song
-
-sys.setrecursionlimit(10000)
+import customtkinter as ctk
+import tkinter as tk
 
 archivo_csv = open('BaseDatos/spotify_data.csv', encoding='utf-8')
 archivo = csv.reader(archivo_csv, delimiter = ',')
@@ -16,5 +16,22 @@ for fila in archivo:
     # print(song)
 print('Fin de archivo')
 
-trie.saveFile('BaseDatos/trieSongName.bin')    
-print('Archivo creado')
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
+
+app = ctk.CTk()
+app.geometry("400x240")
+
+def getText():
+    text = textbox.get("1.0", "end-1c")
+    print(trie.getSong(text))
+    
+ctk.CTkLabel(app, text="Nombre de cancion").pack()
+    
+textbox = ctk.CTkTextbox(app, width=200, height=50)
+textbox.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+
+button = ctk.CTkButton(master=app, text="Buscar", command=getText)
+button.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+app.mainloop()
