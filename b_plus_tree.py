@@ -28,6 +28,15 @@ class NodeBPlusTree(object):
         del self.values[i]
         del self.keys[i]
 
+    def split():
+        pass
+
+    def fusion():
+        pass
+
+    def borrow_key():
+        pass
+
 class LeafBPlusTree(NodeBPlusTree):
 
     def __init__(self, parent=None, prev_node=None, next_node=None):
@@ -55,12 +64,45 @@ class LeafBPlusTree(NodeBPlusTree):
         del self.keys[i]
         del self.values[i]
 
+    def fusion():
+        pass
+
+    def borrow_key():
+        pass
+
+
+
 class BPlusTree(object):
 
     MAXIMUM = 4
+    root: NodeBPlusTree
 
     def __init__(self, maximum = MAXIMUM):
         self.root = LeafBPlusTree()
         self.maximum: int = maximum if maximum > 2 else 2
         self.minimum: int = self.maximum // 2
         self.depth = 0
+
+    def __getitem__():
+        pass
+
+    def __setitem():
+        pass
+
+    def find():
+        pass
+
+    def query():
+        pass
+
+    def change():
+        pass
+
+    def insert():
+        pass
+
+    def insert_index():
+        pass
+
+    def delete():
+        pass
