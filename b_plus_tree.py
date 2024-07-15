@@ -15,6 +15,14 @@ class NodeBPlusTree(object):
 
     def __getitem__(self, item):
         return self.values[self.index(item)]
+    
+    def __setitem__(self, key, value):
+        i = self.index(key)
+        self.keys[i:i] = key
+        if i < len(self.values):
+            self.values.pop(i)
+        self.values[i:i] = value
+
 
 class LeafBPlusTree(NodeBPlusTree):
 
