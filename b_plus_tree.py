@@ -30,8 +30,14 @@ class NodeBPlusTree(object):
 
 class LeafBPlusTree(NodeBPlusTree):
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, parent=None, prev_node=None, next_node=None):
+        super(LeafBPlusTree, self)._init_(parent)
+        self.next: LeafBPlusTree = next_node
+        if next_node is not None:
+            next_node.pref = self
+        self.prev: LeafBPlusTree = prev_node
+        if prev_node is not None:
+            prev_node.next = self
 
 
 class BPlusTree(object):
