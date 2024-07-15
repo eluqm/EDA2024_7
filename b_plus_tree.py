@@ -50,6 +50,10 @@ class LeafBPlusTree(NodeBPlusTree):
             else:
                 self.values[i - 1] = value
 
+    def __delitem__(self, key):
+        i = self.keys.index(key)
+        del self.keys[i]
+        del self.values[i]
 
 class BPlusTree(object):
 
