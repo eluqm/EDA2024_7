@@ -42,6 +42,15 @@ class LeafBPlusTree(NodeBPlusTree):
     def __getitem__(self, item):
         return self.values[self.keys.index(item)]
 
+    def __setitem__(self, key, value):
+            i = self.index(key)
+            if key not in self.keys:
+                self.keys[i:i] = [key]
+                self.values[i:i] = [value]
+            else:
+                self.values[i - 1] = value
+
+
 class BPlusTree(object):
 
     def __init__(self) -> None:
