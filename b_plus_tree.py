@@ -13,6 +13,8 @@ class NodeBPlusTree(object):
                 return i
         return len(self.keys)
 
+    def __getitem__(self, item):
+        return self.values[self.index(item)]
 
 class LeafBPlusTree(NodeBPlusTree):
 
