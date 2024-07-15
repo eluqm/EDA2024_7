@@ -57,5 +57,10 @@ class LeafBPlusTree(NodeBPlusTree):
 
 class BPlusTree(object):
 
-    def __init__(self) -> None:
-        pass
+    MAXIMUM = 4
+
+    def __init__(self, maximum = MAXIMUM):
+        self.root = LeafBPlusTree()
+        self.maximum: int = maximum if maximum > 2 else 2
+        self.minimum: int = self.maximum // 2
+        self.depth = 0
