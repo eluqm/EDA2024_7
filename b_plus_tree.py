@@ -39,6 +39,8 @@ class LeafBPlusTree(NodeBPlusTree):
         if prev_node is not None:
             prev_node.next = self
 
+    def __getitem__(self, item):
+        return self.values[self.keys.index(item)]
 
 class BPlusTree(object):
 
