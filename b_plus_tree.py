@@ -173,8 +173,8 @@ class BPlusTree(object):
         self.minimum: int = self.maximum // 2
         self.depth = 0
 
-    def __getitem__():
-        pass
+    def __getitem__(self, item):
+        return self.find(item)[item]
 
     def __setitem():
         pass
