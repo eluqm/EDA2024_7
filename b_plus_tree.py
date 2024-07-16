@@ -148,10 +148,19 @@ class LeafBPlusTree(NodeBPlusTree):
         if self.prev is not None:
             self.prev.next = self.next
 
-    def borrow_key():
-        pass
-
-
+    def borrow_key(self, minimum: int):
+        index = self.parent.index(self.keys[0])
+        if index < len(self.parent.keys) and len(self.next.keys) > minimum:
+            self.keys += [self.next.keys.pop(0)]
+            self.values += [self.next.values.pop(0)]
+            self.parent.keys[index] = self.next.keys[0]
+            return True
+        elif index != 0 and len(self.prev.keys) > minimum:
+            self.keys[0:0] = [self.prev.keys.pop()]
+            self.values[0:0] = [self.prev.values.pop()]
+            self.parent.keys[index - 1] = self.keys[0]
+            return True
+        return False
 
 class BPlusTree(object):
 
