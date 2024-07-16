@@ -176,8 +176,12 @@ class BPlusTree(object):
     def __getitem__(self, item):
         return self.find(item)[item]
 
-    def __setitem():
-        pass
+    def __setitem__(self, key, value, leaf=None):
+        if leaf is None:
+            leaf = self.find(key)
+        leaf[key] = value
+        if len(leaf.keys) > self.maximum:
+            self.insert_index(*leaf.split())
 
     def find():
         pass
