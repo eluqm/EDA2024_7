@@ -1,5 +1,3 @@
-# import random
-
 class NodeBPlusTree(object):
 
     def __init__(self, parent=None):
