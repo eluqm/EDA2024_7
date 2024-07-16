@@ -47,8 +47,24 @@ class NodeBPlusTree(object):
         self.keys = self.keys[mid + 1:]
         self.values = self .values[mid + 1:]
 
-    def fusion():
-        pass
+    def fusion(self):
+        global fusions, parent_fusions
+        fusions += 1
+        parent_fusions += 1
+        index = self.parent.index(self.keys[0])
+
+        if index < len(self.parent.keys):
+            next_node: NodeBPlusTree = self.parent.values[index + 1]
+            next_node.keys[0:0] = self.keys + [self.parent.keys[index]]
+            for child in self.values:
+                child.parent = next_node
+            next_node.values[0:0] = self.values
+        else:
+            prev: NodeBPlusTree = self.parent.values[-2]
+            prev.keys += [self.parent.keys[-1]] + self.keys
+            for child in self.values:
+                child.parent = prev
+            prev.values += self.values
 
     def borrow_key():
         pass
