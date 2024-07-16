@@ -191,8 +191,9 @@ class BPlusTree(object):
 
         return node
 
-    def query():
-        pass
+    def query(self, key):
+        leaf = self.find(key)
+        return leaf[key] if key in leaf.keys else None
 
     def change():
         pass
