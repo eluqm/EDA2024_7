@@ -195,8 +195,13 @@ class BPlusTree(object):
         leaf = self.find(key)
         return leaf[key] if key in leaf.keys else None
 
-    def change():
-        pass
+    def change(self, key, value):
+        leaf = self.find(key)
+        if key not in leaf.keys:
+            return False, leaf
+        else:
+            leaf[key] = value
+            return True, leaf
 
     def insert():
         pass
