@@ -117,6 +117,21 @@ class LeafBPlusTree(NodeBPlusTree):
         del self.keys[i]
         del self.values[i]
 
+    def split(self):
+        global splits
+        splits += 1
+
+        left = LeafBPlusTree(self.parent, self.prev, self)
+        mid = len(self.keys) // 2
+        
+        left.keys = self.keys[:mid]
+        left.values = self.values[:mid]
+
+        self.keys: list = self.keys[mid:]
+        self.values: list = self.values[mid:]
+
+        return self.keys[0], [left, self]
+    
     def fusion():
         pass
 
