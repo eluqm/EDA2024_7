@@ -28,8 +28,24 @@ class NodeBPlusTree(object):
         del self.values[i]
         del self.keys[i]
 
-    def split():
-        pass
+    def split(self):
+        global splits, parent_splits
+        splits += 1
+        parent_splits += 1
+        
+        left = NodeBPlusTree(self.parent)
+        
+        mid = len(self.keys) // 2
+
+        left.keys = self.keys[:mid]
+        left.values = self.values[:mid + 1]
+        
+        for child in left.values:
+            child.parent = left
+        
+        key = self.keys[mid]
+        self.keys = self.keys[mid + 1:]
+        self.values = self .values[mid + 1:]
 
     def fusion():
         pass
