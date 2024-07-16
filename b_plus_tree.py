@@ -211,8 +211,19 @@ class BPlusTree(object):
             self.__setitem__(key, value, leaf)
             return True, leaf
 
-    def insert_index():
-        pass
+    def insert_index(self,key, values: list[NodeBPlusTree]):
+        parent = values[1].parent
+        if parent is None:
+            values[0].parent = values[1].parent = self.root = NodeBPlusTree()
+            self.depth += 1
+            self.root.keys = [key]
+            self.root.values = values
+            return
+        
+        parent[key] = values
+
+        if len(parent.keys) > self.maximum:
+            self.insert_index(*parent.split())
 
     def delete():
         pass
