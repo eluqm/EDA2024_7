@@ -72,7 +72,9 @@ playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
 list = DragDropListbox(playlist, bg="#272727", fg="black",  selectbackground="blue", selectforeground="white", highlightthickness=0,) #bd=0)
 list.pack(expand=True, fill=BOTH)
 
-
+songs = ["Song 1", "Song 2", "Song 3", "Song 4", "Song 5"]
+for song in songs:
+    list.insert(END, song)
 
 
 window.mainloop()
