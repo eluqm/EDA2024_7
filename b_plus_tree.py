@@ -183,8 +183,13 @@ class BPlusTree(object):
         if len(leaf.keys) > self.maximum:
             self.insert_index(*leaf.split())
 
-    def find():
-        pass
+    def find(self, key) -> LeafBPlusTree:
+        node = self.root
+
+        while type(node) is not LeafBPlusTree:
+            node = node[key]
+
+        return node
 
     def query():
         pass
