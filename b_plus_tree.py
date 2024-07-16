@@ -66,8 +66,29 @@ class NodeBPlusTree(object):
                 child.parent = prev
             prev.values += self.values
 
-    def borrow_key():
-        pass
+    def borrow_key(self, minimum: int):
+        index = self.parent.index(self.keys[0])
+        if index < len(self.parent.keys):
+            next_node: NodeBPlusTree = self.parent.values[index + 1]
+            if len(next_node.keys) > minimum:
+                self.keys += [self.parent.keys[index]]
+
+                borrow_node = next_node.values.pop(0)
+                borrow_node.parent = self
+                self.values += [borrow_node]
+                self.parent.keys[index] = next_node.keys.pop(0)
+                return True
+        elif index != 0:
+            prev: NodeBPlusTree = self.parent.values[index - 1]
+            if len(prev.keys) > minimum:
+                self.keys[0:0] = [self.parent.keys[index - 1]]
+
+                borrow_node = prev.values.pop()
+                borrow_node.parent = self
+                self.values[0:0] = [borrow_node]
+                self.parent.keys[index - 1] = prev.keys.pop()
+                return True
+        return False
 
 class LeafBPlusTree(NodeBPlusTree):
 
