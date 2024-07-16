@@ -203,8 +203,13 @@ class BPlusTree(object):
             leaf[key] = value
             return True, leaf
 
-    def insert():
-        pass
+    def insert(self, key, value):
+        leaf = self.find(key)
+        if key in leaf.keys:
+            return False, leaf
+        else:
+            self.__setitem__(key, value, leaf)
+            return True, leaf
 
     def insert_index():
         pass
