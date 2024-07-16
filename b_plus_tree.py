@@ -132,8 +132,21 @@ class LeafBPlusTree(NodeBPlusTree):
 
         return self.keys[0], [left, self]
     
-    def fusion():
-        pass
+    def fusion(self):
+        global fusions
+        fusions += 1
+
+        if self.next is not None and self.next.parent == self.parent:
+            self.next.keys[0:0] = self.keys
+            self.next.values[0:0] = self.values
+        else:
+            self.prev.keys += self.keys
+            self.prev.values += self.values
+
+        if self.next is not None:
+            self.next.prev = self.prev
+        if self.prev is not None:
+            self.prev.next = self.next
 
     def borrow_key():
         pass
