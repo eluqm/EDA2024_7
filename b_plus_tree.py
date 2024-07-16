@@ -225,5 +225,18 @@ class BPlusTree(object):
         if len(parent.keys) > self.maximum:
             self.insert_index(*parent.split())
 
-    def delete():
-        pass
+    def delete(self, key, node: NodeBPlusTree = None):
+        if node is None:
+            node = self.find(key)
+        del node[key]
+
+        if len(node.keys) > self.maximum:
+            if node == self.root:
+                if len(self.root.keys) == 0 and len(self.root.values) > 0:
+                    self.root = self.root.values[0]
+                    self.root.parent = None
+                    self.depth -= 1
+                return
+            elif not node.borrow_key(self.minimum):
+                node.fusion()
+                self.delete(key, node.parent)
