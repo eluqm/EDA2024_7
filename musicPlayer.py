@@ -11,10 +11,28 @@ class DragDropListbox(Listbox):
         self.drag_data = {"x": 0, "y": 0, "item": None}
 
     def save_mouse_position(self, event):
-        pass
+        self.drag_data["item"] = self.nearest(event.y)
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
 
     def on_drag(self, event):
-        pass
+        if self.drag_data["item"] is None:
+            return
+        
+        item_index = self.drag_data["item"]
+        new_index = self.nearest(event.y)
+
+        if new_index != item_index:
+            self.move_item(item_index, new_index)
+            self.drag_data["item"] = new_index
+
+    def move_item(self, from_index, to_index):
+        if from_index == to_index:
+            return
+        
+        item_text = self.get(from_index)
+        self.delete(from_index)
+        self.insert(to_index, item_text)
 
 window = CTk()
 window.title("Music Player")
@@ -53,6 +71,8 @@ playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
 
 list = DragDropListbox(playlist, bg="#272727", fg="black",  selectbackground="blue", selectforeground="white", highlightthickness=0,) #bd=0)
 list.pack(expand=True, fill=BOTH)
+
+
 
 
 window.mainloop()
