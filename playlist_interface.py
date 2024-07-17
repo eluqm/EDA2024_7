@@ -51,5 +51,11 @@ class SongItem:
         self.song_interface.button_position.bind('<B1-Motion>', self.on_drag)
         self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
         self.drag_data = {"x": 0, "y": 0, "item": None}
+    
+    def save_mouse_position(self, event):
+        print("click")
+        self.drag_data["item"] = self.index
+        self.drag_data["x"] = event.x
+        self.drag_data["y"] = event.y
 
 window.mainloop()
