@@ -42,5 +42,14 @@ class SongItem_Interface:
         self.button_position = CTkButton(master=self.position, text="", width=30, height=16, fg_color="#000000", image=self.icon_position)
         self.button_position.place(relx=0.5, rely=0.5, anchor="center")
 
+class SongItem:
+    def __init__(self, list, song, index):
+        self.index = index
+        self.indexOriginal = index
+        self.song_interface = SongItem_Interface(list, song)
+        self.song_interface.button_position.bind('<Button-1>', self.save_mouse_position)
+        self.song_interface.button_position.bind('<B1-Motion>', self.on_drag)
+        self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
+        self.drag_data = {"x": 0, "y": 0, "item": None}
 
 window.mainloop()
