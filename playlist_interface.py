@@ -83,6 +83,17 @@ class SongItem:
         SongItem.reposition_songItems()
 
     def nearest_songItem(self, y):
-        pass
+        index_songItem = None
+        min_distance = float('inf')
+
+        for songItem in ctk_frames:
+            frame_y = songItem.song_interface.song_item.winfo_rooty()
+            distance = abs(frame_y - y)
+
+            if distance < min_distance:
+                min_distance = distance
+                index_songItem = songItem.index
+
+        return index_songItem
 
 window.mainloop()
