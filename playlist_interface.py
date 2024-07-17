@@ -95,5 +95,12 @@ class SongItem:
                 index_songItem = songItem.index
 
         return index_songItem
+    
+    @classmethod
+    def remove_songItems(cls, index):
+        if 0 <= index < len(ctk_frames):
+            ctk_frames[index].song_interface.destroy()
+            del ctk_frames[index]
+            cls.reposition_songItems()
 
 window.mainloop()
