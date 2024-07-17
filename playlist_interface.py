@@ -29,6 +29,12 @@ song_data.pack(pady=(0, 0))
 # Duracion
 duration = CTkLabel(master=song_item, text="Duracion", text_color="#ffffff", font=("Arial Bold", 10), width=60, height=10, anchor="e")
 duration.pack(side="left", pady=(34, 0), padx=(5, 5))
-
+# Boton de movimiento
+position = CTkFrame(master=song_item, width=60, height=50, fg_color="#000000", corner_radius=0)
+position.pack(side="left", padx=(0, 0))
+icon_position_data = Image.open("src/position-icon.png")
+icon_position = CTkImage(dark_image=icon_position_data, light_image=icon_position_data, size=(30, 10))
+button_position = CTkButton(master=position, text="", width=30, height=16, fg_color="#000000", image=icon_position)
+button_position.place(relx=0.5, rely=0.5, anchor="center")
 
 window.mainloop()
