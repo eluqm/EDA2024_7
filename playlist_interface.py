@@ -58,4 +58,22 @@ class SongItem:
         self.drag_data["x"] = event.x
         self.drag_data["y"] = event.y
 
+    def on_drag(self, event):
+        print("mover")
+        if self.drag_data["item"] is None:
+            return
+
+        item_index = self.drag_data["item"]
+        new_index = self.nearest_songItem(event.y_root)
+
+        if new_index != item_index and new_index is not None:
+            self.move_item(item_index, new_index)
+            self.drag_data["item"] = new_index
+    
+    def move_item(self, from_index, to_index):
+        pass
+
+    def nearest_songItem(self, y):
+        pass
+
 window.mainloop()
