@@ -12,6 +12,9 @@ window.configure(fg_color='black')
 playlist = CTkScrollableFrame(master=window, width=380, height=450, fg_color="#272727", corner_radius=0,)
 playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
 
+ctk_frames = [] #cambiar nombre
+
+
 class SongItem_Interface:
     def __init__(self, list, song):
         self.song = song
@@ -71,7 +74,13 @@ class SongItem:
             self.drag_data["item"] = new_index
     
     def move_item(self, from_index, to_index):
-        pass
+        if from_index == to_index:
+            return
+
+        item = ctk_frames.pop(from_index)
+        ctk_frames.insert(to_index, item)
+
+        SongItem.reposition_songItems()
 
     def nearest_songItem(self, y):
         pass
