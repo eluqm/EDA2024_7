@@ -26,6 +26,9 @@ song_name = CTkLabel(master=specifications, text="Nombre de la cancion", text_co
 song_name.pack(pady=(0, 0))
 song_data = CTkLabel(master=specifications, text="Autor · N° vistas", text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
 song_data.pack(pady=(0, 0))
+# Duracion
+duration = CTkLabel(master=song_item, text="Duracion", text_color="#ffffff", font=("Arial Bold", 10), width=60, height=10, anchor="e")
+duration.pack(side="left", pady=(34, 0), padx=(5, 5))
 
 
 window.mainloop()
