@@ -6,36 +6,17 @@ import customtkinter as ctk
 from tkinter import ttk
 import tkinter as tk
 
+# Lectura del .csv
 archivo_csv = open('BaseDatos/spotify_data.csv', encoding='utf-8')
 archivo = csv.reader(archivo_csv, delimiter = ',')
-
 next(archivo)
 trie = Trie()
 for fila in archivo:
     song = Song(fila[3], fila[2], fila[1], fila[6], fila[5], fila[4], fila[18])
     trie.insert(song.getSong_name(), song)
-    # print(song)
 print('Fin de archivo')
-"""
-cancion = Song("53QF56cjZA9RTuuMZDrSA6","Hello","Jason Mraz", "acoustic", 2012, 68, 240166)
-print(cancion)
-cancion1 = Song("53QF56cjZA9RTuuMZDrS44","Hello","Michael Jackson", "pop", 2012, 68, 3725000)
-print(cancion1)
-cancion2 = Song("ghtF56cjZA9RTuuMZDrSA6","Its my live","Bon Jovi", "rock", 2002, 68, 2725000)
-print(cancion2)
 
-trie = Trie()
-trie.insert(cancion.getSong_name(), cancion)
-trie.insert(cancion1.getSong_name(), cancion1)
-trie.insert(cancion2.getSong_name(), cancion2)
-"""
-
-ctk.set_appearance_mode("System")
-ctk.set_default_color_theme("blue")
-
-app = ctk.CTk()
-app.geometry("400x440")
-
+# Metodos necesarios para interactuar con la interfaz grafica
 def getSongId():
     print(song.getSong_id())
 
@@ -64,11 +45,13 @@ def buttonClick():
     else:
         print("No se ha seleccionado ninguna canción.")
 
-"""    
-    for song in songs:
-        button = ctk.CTkButton(tree, text="Agregar a lista de reproducción", getSongId)
-        tree.tag_bind(song.getSong_id(), "<Button-1>", lambda event, song_id=song.getSong_id(): button.pack())
-"""
+# Elementos de la interfaz grafica
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
+
+app = ctk.CTk()
+app.geometry("400x440")
+
 main = ctk.CTkFrame(app)
 main.pack(fill="both", expand=True, padx=10, pady=10)
 
@@ -92,7 +75,7 @@ scroll_y.pack(side="right", fill="y")
 tree.configure(yscroll=scroll_y.set)
 tree.pack(fill="x", expand=False)
 
-# Configurar evento de selección de fila en la tabla
+# Evento
 tree.bind('<<TreeviewSelect>>', onTreeSelect)
 
 buttonAddList = ctk.CTkButton(main, text="Agregar a lista de reproducción", command=buttonClick)
