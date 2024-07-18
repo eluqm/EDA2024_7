@@ -109,5 +109,13 @@ class SongItem:
             songItem = SongItem(playlist, song, index)
             ctk_frames.insert(index, songItem)
             cls.reposition_songItems()
+    
+    @classmethod
+    def reposition_songItems(cls):
+        for i, songItem in enumerate(ctk_frames):
+            songItem.index = i
+            songItem.song_interface.song_item.pack_forget()
+        for songItem in ctk_frames:
+            songItem.song_interface.song_item.pack(pady=1)
 
 window.mainloop()
