@@ -28,6 +28,7 @@ class Trie:
                 return False
             node = node.children[char]
         return node.endWord
+    # Se puede resumir este con getSong
             
     def getSong(self, word):
         if self.search(word):
@@ -35,11 +36,23 @@ class Trie:
             for char in word:
                 node = node.children[char]
             if node.endWord:
-                dats = ""
+                dats = []
                 for dat in node.data:
-                    dats += f"{dat.getSong_id()}, {dat.getSong_name()}, {dat.getAuthor()}, {dat.getYear()}, {dat.getDuration()}\n"
+                    dats.append(dat)
                 return dats
-        return "No se encontraron resultados"
+        return []
+    # Tiempo O(n)
+    
+    def getSong(self, songName, author):
+        if self.search(songName):
+            node = self.root
+            for char in songName:
+                node = node.children[char]
+            if node.endWord:
+                for dat in node.data:
+                    if dat.author == author:
+                        return dat
+        return
         
     def contains(self, prefix):
         node = self.root
