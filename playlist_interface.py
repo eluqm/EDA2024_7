@@ -48,7 +48,7 @@ class SongItem_Interface:
 class SongItem:
     def __init__(self, list, song, index):
         self.index = index
-        self.indexOriginal = index
+        self.indexControl = index
         self.song_interface = SongItem_Interface(list, song)
         self.song_interface.button_position.bind('<Button-1>', self.save_mouse_position)
         self.song_interface.button_position.bind('<B1-Motion>', self.on_drag)
@@ -84,12 +84,12 @@ class SongItem:
         #item_index = self.drag_data["item"]
         new_index = self.nearest_songItem(event.y_root)
 
-        print(f"item_index: {self.indexOriginal}, new_index: {new_index}")
+        print(f"item_index: {self.indexControl}, new_index: {new_index}")
 
-        if new_index != self.indexOriginal and new_index is not None:
-            print(f"Cambiando orden de {self.indexOriginal} a {new_index}")
-            my_song_list.change_order(self.indexOriginal, new_index)
-            self.indexOriginal = self.index
+        if new_index != self.indexControl and new_index is not None:
+            print(f"Cambiando orden de {self.indexControl} a {new_index}")
+            my_song_list.change_order(self.indexControl, new_index)
+            SongItem.update_indexControl()
     
     def move_item(self, from_index, to_index):
         if from_index == to_index:
@@ -135,6 +135,11 @@ class SongItem:
             songItem.song_interface.song_item.pack_forget()
         for songItem in ctk_frames:
             songItem.song_interface.song_item.pack(pady=1)
+    
+    @classmethod
+    def update_indexControl(cls):
+        for i, songItem in enumerate(ctk_frames):
+            songItem.indexControl = i
 
 my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason Mraz", "acoustic", 2012, 68, 240166))
 my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrS44", "Red Hood", "Michael Jackson", "pop", 2012, 68, 3725000))
