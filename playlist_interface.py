@@ -13,7 +13,7 @@ playlist = CTkScrollableFrame(master=window, width=380, height=450, fg_color="#2
 playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
 
 ctk_frames = [] #cambiar nombre
-
+my_song_list = LinkedList()
 
 class SongItem_Interface:
     def __init__(self, list, song):
@@ -52,7 +52,7 @@ class SongItem:
         self.song_interface = SongItem_Interface(list, song)
         self.song_interface.button_position.bind('<Button-1>', self.save_mouse_position)
         self.song_interface.button_position.bind('<B1-Motion>', self.on_drag)
-        self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
+        #self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
         self.drag_data = {"x": 0, "y": 0, "item": None}
     
     def save_mouse_position(self, event):
@@ -117,5 +117,16 @@ class SongItem:
             songItem.song_interface.song_item.pack_forget()
         for songItem in ctk_frames:
             songItem.song_interface.song_item.pack(pady=1)
+
+my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason Mraz", "acoustic", 2012, 68, 240166))
+my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrS44", "Red Hood", "Michael Jackson", "pop", 2012, 68, 3725000))
+my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Its my live", "Bon Jovi", "rock", 2002, 68, 2725000))
+my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Y will survive", "Juana de Arco", "rock", 2002, 68, 2725000))
+
+current = my_song_list.head
+for _ in range(my_song_list.size):
+    ctk_frames.append(SongItem(playlist, current.song, len(ctk_frames)))
+    current = current.next
+
 
 window.mainloop()
