@@ -102,5 +102,12 @@ class SongItem:
             ctk_frames[index].song_interface.destroy()
             del ctk_frames[index]
             cls.reposition_songItems()
+    
+    @classmethod
+    def insert_songItems(cls, index, song):
+        if 0 <= index <= len(ctk_frames):
+            songItem = SongItem(playlist, song, index)
+            ctk_frames.insert(index, songItem)
+            cls.reposition_songItems()
 
 window.mainloop()
