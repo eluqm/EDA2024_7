@@ -2,38 +2,6 @@ from customtkinter import *
 from tkinter import *
 from PIL import Image
 
-class DragDropListbox(Listbox):
-    def __init__(self, master, **kwargs):
-        super().__init__(master, **kwargs)
-        self.bind('<Button-1>', self.save_mouse_position)
-        self.bind('<B1-Motion>', self.on_drag)
-
-        self.drag_data = {"x": 0, "y": 0, "item": None}
-
-    def save_mouse_position(self, event):
-        self.drag_data["item"] = self.nearest(event.y)
-        self.drag_data["x"] = event.x
-        self.drag_data["y"] = event.y
-
-    def on_drag(self, event):
-        if self.drag_data["item"] is None:
-            return
-        
-        item_index = self.drag_data["item"]
-        new_index = self.nearest(event.y)
-
-        if new_index != item_index:
-            self.move_item(item_index, new_index)
-            self.drag_data["item"] = new_index
-
-    def move_item(self, from_index, to_index):
-        if from_index == to_index:
-            return
-        
-        item_text = self.get(from_index)
-        self.delete(from_index)
-        self.insert(to_index, item_text)
-
 window = CTk()
 window.title("Music Player")
 window.geometry("850x500")
@@ -69,12 +37,6 @@ slider = CTkSlider(master=player, from_=0, to=100, number_of_steps=5, button_col
 playlist = CTkScrollableFrame(master=window, width=380, height=450, fg_color="#272727", corner_radius=0,)
 playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
 
-list = DragDropListbox(playlist, bg="#272727", fg="black",  selectbackground="blue", selectforeground="white", highlightthickness=0,) #bd=0)
-list.pack(expand=True, fill=BOTH)
-
-songs = ["Song 1", "Song 2", "Song 3", "Song 4", "Song 5"]
-for song in songs:
-    list.insert(END, song)
 
 
 window.mainloop()
