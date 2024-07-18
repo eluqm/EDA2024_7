@@ -122,3 +122,9 @@ class LinkedList:
             random_playlist.add_song_at_position(current.song, num_random)
             current = current.next
         return random_playlist
+    
+    def print(self):
+        current = self.head
+        for _ in range(self.size):
+            print(current.song)
+            current = current.next
