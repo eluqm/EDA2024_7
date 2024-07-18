@@ -52,8 +52,11 @@ class SongItem:
         self.song_interface = SongItem_Interface(list, song)
         self.song_interface.button_position.bind('<Button-1>', self.save_mouse_position)
         self.song_interface.button_position.bind('<B1-Motion>', self.on_drag)
-        #self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
+        self.song_interface.button_position.bind('<ButtonRelease-1>', self.on_button_release)
         self.drag_data = {"x": 0, "y": 0, "item": None}
+    
+    def __str__(self):
+        return f"{self.index}, {self.song_interface.song}"
     
     def save_mouse_position(self, event):
         print("click")
@@ -143,5 +146,12 @@ for _ in range(my_song_list.size):
     ctk_frames.append(SongItem(playlist, current.song, len(ctk_frames)))
     current = current.next
 
+def mostrar():
+    my_song_list.print()
+    for songItem in ctk_frames:
+        print(songItem)
+
+bug = CTkButton(master=window, text="mostrar", width=30, height=16, fg_color="#ffffff", command=mostrar)
+bug.place(relx=0.1, rely=0.5, anchor="center")
 
 window.mainloop()
