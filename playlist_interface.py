@@ -35,8 +35,8 @@ class SongItem_Interface:
         self.song_data = CTkLabel(master=self.specifications, text=self.song.getAuthor(), text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
         self.song_data.pack(pady=(0, 0))
         # Duracion
-        self.duration = CTkLabel(master=self.song_item, text=self.song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=10, anchor="e")
-        self.duration.pack(side="left", pady=(34, 0), padx=(5, 5))
+        self.duration = CTkLabel(master=self.song_item, text=self.song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=20, anchor="e")
+        self.duration.pack(side="left", pady=(30, 0), padx=(5, 5))
         # Boton de movimiento
         self.position = CTkFrame(master=self.song_item, width=60, height=50, fg_color="#000000", corner_radius=0)
         self.position.pack(side="left", padx=(0, 0))
@@ -106,6 +106,8 @@ class SongItem:
 
         for songItem in ctk_frames:
             frame_y = songItem.song_interface.song_item.winfo_rooty()
+            #medium_height = songItem.song_interface.song_item.winfo_height()/2
+            #distance = abs(frame_y + medium_height - y)
             distance = abs(frame_y - y)
 
             if distance < min_distance:
@@ -145,6 +147,11 @@ my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason M
 my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrS44", "Red Hood", "Michael Jackson", "pop", 2012, 68, 3725000))
 my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Its my live", "Bon Jovi", "rock", 2002, 68, 2725000))
 my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Y will survive", "Juana de Arco", "rock", 2002, 68, 2725000))
+my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason Mraz", "acoustic", 2012, 68, 240166))
+my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrS44", "Red Hood", "Michael Jackson", "pop", 2012, 68, 3725000))
+my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Its my live", "Bon Jovi", "rock", 2002, 68, 2725000))
+my_song_list.add_song(Song("ghtF56cjZA9RTuuMZDrSA6", "Y will survive", "Juana de Arco", "rock", 2002, 68, 2725000))
+my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason Mraz", "acoustic", 2012, 68, 240166))
 
 current = my_song_list.head
 for _ in range(my_song_list.size):
