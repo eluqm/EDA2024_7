@@ -6,6 +6,9 @@ import customtkinter as ctk
 from tkinter import ttk
 import tkinter as tk
 
+archivo_csv = open('BaseDatos/spotify_data.csv', encoding='utf-8')
+archivo = csv.reader(archivo_csv, delimiter = ',')
+
 next(archivo)
 trie = Trie()
 for fila in archivo:
@@ -50,9 +53,17 @@ def getText():
 def onTreeSelect(event):
     selectedItem = tree.focus()  #  El ítem seleccionado en la tabla
     if selectedItem:
-        itemValuesSong = tree.item(selectedItem, 'values')  # Obtiene los valores de la fila seleccionada
-        print(f"Canción seleccionada: {trie.getSongU(itemValuesSong[0], itemValuesSong[1])}")
+        itemValuesSong = tree.item(selectedItem, 'values')  # Valores de la fila seleccionada
+        app.selectedSong = trie.getSongU(itemValuesSong[0], itemValuesSong[1])
+        print(f"Canción seleccionada: {app.selectedSong}") 
         
+def buttonClick():
+    if hasattr(app, 'selectedSong') and app.selectedSong:
+        print(f"Retornando el objeto Song: {app.selectedSong}")
+        return app.selectedSong
+    else:
+        print("No se ha seleccionado ninguna canción.")
+
 """    
     for song in songs:
         button = ctk.CTkButton(tree, text="Agregar a lista de reproducción", getSongId)
@@ -83,4 +94,8 @@ tree.pack(fill="x", expand=False)
 
 # Configurar evento de selección de fila en la tabla
 tree.bind('<<TreeviewSelect>>', onTreeSelect)
+
+buttonAddList = ctk.CTkButton(main, text="Agregar a lista de reproducción", command=buttonClick)
+buttonAddList.pack(pady=10)
+
 app.mainloop()
