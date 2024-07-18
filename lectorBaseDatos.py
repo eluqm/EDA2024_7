@@ -6,11 +6,6 @@ import customtkinter as ctk
 from tkinter import ttk
 import tkinter as tk
 
-
-
-archivo_csv = open('BaseDatos/spotify_data.csv', encoding='utf-8')
-archivo = csv.reader(archivo_csv, delimiter = ',')
-
 next(archivo)
 trie = Trie()
 for fila in archivo:
@@ -38,6 +33,9 @@ ctk.set_default_color_theme("blue")
 app = ctk.CTk()
 app.geometry("400x440")
 
+def getSongId():
+    print(song.getSong_id())
+
 def getText():
     for item in tree.get_children():
         tree.delete(item)
@@ -46,8 +44,20 @@ def getText():
     
     arrSongs = trie.getSong(songName)
     for song in arrSongs:
-        tree.insert("", "end", values=(song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration()))
+        songValues = (song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration())
+        tree.insert("", "end", values=songValues, tags=(song.getSong_id(),))
 
+def onTreeSelect(event):
+    selectedItem = tree.focus()  #  El ítem seleccionado en la tabla
+    if selectedItem:
+        itemValuesSong = tree.item(selectedItem, 'values')  # Obtiene los valores de la fila seleccionada
+        print(f"Canción seleccionada: {trie.getSongU(itemValuesSong[0], itemValuesSong[1])}")
+        
+"""    
+    for song in songs:
+        button = ctk.CTkButton(tree, text="Agregar a lista de reproducción", getSongId)
+        tree.tag_bind(song.getSong_id(), "<Button-1>", lambda event, song_id=song.getSong_id(): button.pack())
+"""
 main = ctk.CTkFrame(app)
 main.pack(fill="both", expand=True, padx=10, pady=10)
 
@@ -71,4 +81,6 @@ scroll_y.pack(side="right", fill="y")
 tree.configure(yscroll=scroll_y.set)
 tree.pack(fill="x", expand=False)
 
+# Configurar evento de selección de fila en la tabla
+tree.bind('<<TreeviewSelect>>', onTreeSelect)
 app.mainloop()
