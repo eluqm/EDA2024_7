@@ -73,6 +73,21 @@ class SongItem:
             self.move_item(item_index, new_index)
             self.drag_data["item"] = new_index
     
+    def on_button_release(self, event):
+        print("final")
+        if self.drag_data["item"] is None:
+            return
+        
+        #item_index = self.drag_data["item"]
+        new_index = self.nearest_songItem(event.y_root)
+
+        print(f"item_index: {self.indexOriginal}, new_index: {new_index}")
+
+        if new_index != self.indexOriginal and new_index is not None:
+            print(f"Cambiando orden de {self.indexOriginal} a {new_index}")
+            my_song_list.change_order(self.indexOriginal, new_index)
+            self.indexOriginal = self.index
+    
     def move_item(self, from_index, to_index):
         if from_index == to_index:
             return
