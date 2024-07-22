@@ -77,6 +77,30 @@ class Trie:
             traverse(self.root)
 
         return data
+    
+    def getSongAdvanced(self, songName, author, year):
+        data = []
+        if songName:
+            if self.search(songName):
+                node = self.root
+                for char in songName:
+                    node = node.children[char]
+                if node.endWord:
+                    for dat in node.data:
+                        if (author is None or dat.author == author) and \
+                           (year is None or str(dat.getYear()) == str(year)):
+                            data.append(dat)
+        else:
+            def traverse(node):
+                if node.endWord:
+                    for dat in node.data:
+                        if (author is None or dat.author == author) and \
+                           (year is None or str(dat.getYear()) == str(year)):
+                            data.append(dat)
+                for child in node.children.values():
+                    traverse(child)
+            traverse(self.root)
+        return data
         
     def contains(self, prefix):
         node = self.root
@@ -108,9 +132,10 @@ rep = Trie()
 rep.insert(cancion.getSong_name(), cancion)
 rep.insert(cancion1.getSong_name(), cancion1)
 rep.insert(cancion2.getSong_name(), cancion2)
+rep.insert(cancion2.getSong_name(), cancion3)
 
-print("Busqueda por nombre y año")
-canciones = rep.getSongByYear("I Won't Give Up",2012)
+print("Busqueda Avanzada:")
+canciones = rep.getSongAdvanced(None,"Michael Jackson",None)
 for cancion in canciones:
     print(cancion)
 """
