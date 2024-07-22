@@ -17,30 +17,36 @@ for fila in archivo:
 print('Fin de archivo')
 
 # Metodos necesarios para interactuar con la interfaz grafica
+arrSongsCoincidence = []
 def getText():
+    global arrSongsCoincidence
     for item in tree.get_children():
         tree.delete(item)
 
     songName = textbox.get("1.0", "end-1c")
     
-    arrSongs = trie.getSong(songName)
-    for song in arrSongs:
-        songValues = (song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration())
+    arrSongsCoincidence = trie.getSong(songName)
+    for i, song in enumerate(arrSongsCoincidence):
+        songValues = (i+1 ,song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration())
         tree.insert("", "end", values=songValues, tags=(song.getSong_id(),))
 
 def onSelectSong(event):
+    global arrSongsCoincidence
     selectedItem = tree.focus()  #  El ítem seleccionado en la tabla
     if selectedItem:
         itemValuesSong = tree.item(selectedItem, 'values')  # Valores de la fila seleccionada
-        app.selectedSong = trie.getSongByAuthor(itemValuesSong[0], itemValuesSong[1])
-        print(f"Canción seleccionada: {app.selectedSong}")
-
+        app.selectedSong = arrSongsCoincidence[int(itemValuesSong[0]) - 1]
+        print(f"Canción seleccionada: {app.selectedSong}") #Objeto Song
+        print(app.selectedSong.getSong_id()) # song_id
+        
 def onDoubleClickSong(event):
+    global arrSongsCoincidence
     selectedItem = tree.focus()
     if selectedItem:
         itemValuesSong = tree.item(selectedItem, 'values')
-        app.selectedSong = trie.getSongByAuthor(itemValuesSong[0], itemValuesSong[1])
-        print(f"Doble clic en la canción: {app.selectedSong.song_id}")
+        app.selectedSong = arrSongsCoincidence[int(itemValuesSong[0])]
+        print(f"Doble clic en la canción: {app.selectedSong}")
+        print(app.selectedSong.getSong_id())
         
 def buttonClick():
     if hasattr(app, 'selectedSong') and app.selectedSong:
@@ -54,7 +60,7 @@ ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 
 app = ctk.CTk()
-app.geometry("400x440")
+app.geometry("500x500")
 
 main = ctk.CTkFrame(app)
 main.pack(fill="both", expand=True, padx=10, pady=10)
@@ -76,8 +82,8 @@ button.pack(pady=10)
 
 table = ctk.CTkFrame(main)
 table.pack(pady=10, fill="both", expand=True)
-columns = ("Nombre", "Autor", "Género", "Año", "Duración")
-tree = ttk.Treeview(table, columns=columns, show="headings", height=8)
+columns = ("Coincidencia","Nombre", "Autor", "Género", "Año", "Duración")
+tree = ttk.Treeview(table, columns=columns, show="headings", height=30)# height=8
 for col in columns:
     tree.heading(col, text=col)
     tree.column(col, width=80, anchor="center")
