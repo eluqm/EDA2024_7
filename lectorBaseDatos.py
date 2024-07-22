@@ -17,9 +17,6 @@ for fila in archivo:
 print('Fin de archivo')
 
 # Metodos necesarios para interactuar con la interfaz grafica
-def getSongId():
-    print(song.getSong_id())
-
 def getText():
     for item in tree.get_children():
         tree.delete(item)
@@ -31,12 +28,19 @@ def getText():
         songValues = (song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration())
         tree.insert("", "end", values=songValues, tags=(song.getSong_id(),))
 
-def onTreeSelect(event):
+def onSelectSong(event):
     selectedItem = tree.focus()  #  El ítem seleccionado en la tabla
     if selectedItem:
         itemValuesSong = tree.item(selectedItem, 'values')  # Valores de la fila seleccionada
-        app.selectedSong = trie.getSongU(itemValuesSong[0], itemValuesSong[1])
-        print(f"Canción seleccionada: {app.selectedSong}") 
+        app.selectedSong = trie.getSongByAuthor(itemValuesSong[0], itemValuesSong[1])
+        print(f"Canción seleccionada: {app.selectedSong}")
+
+def onDoubleClickSong(event):
+    selectedItem = tree.focus()
+    if selectedItem:
+        itemValuesSong = tree.item(selectedItem, 'values')
+        app.selectedSong = trie.getSongByAuthor(itemValuesSong[0], itemValuesSong[1])
+        print(f"Doble clic en la canción: {app.selectedSong.song_id}")
         
 def buttonClick():
     if hasattr(app, 'selectedSong') and app.selectedSong:
@@ -60,6 +64,13 @@ ctk.CTkLabel(main, text="Nombre de cancion").pack(pady=10)
 textbox = ctk.CTkTextbox(main, width=200, height=50)
 textbox.pack(pady=10)
 
+ctk.CTkLabel(main, text="Año de la canción").pack(pady=10)
+
+#validate_numeric_cmd = app.register(validate_numeric_input)
+#yearbox = ctk.CTkTextbox(main, width=200, height=50)
+#yearbox.pack(pady=10)
+#yearbox.configure(validate="key", validatecommand=(validate_numeric_cmd, "%P"))
+
 button = ctk.CTkButton(main, text="Buscar", command=getText)
 button.pack(pady=10)
 
@@ -75,10 +86,8 @@ scroll_y.pack(side="right", fill="y")
 tree.configure(yscroll=scroll_y.set)
 tree.pack(fill="x", expand=False)
 
-# Evento
-tree.bind('<<TreeviewSelect>>', onTreeSelect)
-
-buttonAddList = ctk.CTkButton(main, text="Agregar a lista de reproducción", command=buttonClick)
-buttonAddList.pack(pady=10)
+# Eventos para las canciones
+tree.bind('<<TreeviewSelect>>', onSelectSong)
+tree.bind('<Double-1>', onDoubleClickSong)
 
 app.mainloop()
