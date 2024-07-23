@@ -11,9 +11,14 @@ archivo_csv = open('BaseDatos/spotify_data.csv', encoding='utf-8')
 archivo = csv.reader(archivo_csv, delimiter = ',')
 next(archivo)
 trie = Trie()
+
+count = 0 # Eliminar
 for fila in archivo:
+    if count >= 10000: # Eliminar
+            break  # Eliminar
     song = Song(fila[3], fila[2], fila[1], fila[6], fila[5], fila[4], fila[18])
     trie.insert(song.getSong_name(), song)
+    count += 1 # Eliminar
 print('Fin de archivo')
 
 # Metodos necesarios para interactuar con la interfaz grafica
@@ -22,13 +27,28 @@ def getText():
     global arrSongsCoincidence
     for item in tree.get_children():
         tree.delete(item)
-
     songName = textbox.get("1.0", "end-1c")
-    
-    arrSongsCoincidence = trie.getSong(songName)
+    year_text = yearbox.get("1.0", "end-1c").strip()
+    print(year_text)
+    year = year_text
+    try:
+        year = int(year_text) if year_text else None
+    except ValueError:
+        year = None
+
+    if year:
+        arrSongsCoincidence = trie.getSongByYear(songName, year)
+    else:
+        arrSongsCoincidence = trie.getSong(songName)
     for i, song in enumerate(arrSongsCoincidence):
         songValues = (i+1 ,song.getSong_name(), song.getAuthor(), song.getGenre(), song.getYear(), song.getDuration())
         tree.insert("", "end", values=songValues, tags=(song.getSong_id(),))
+
+def validateNumericInput(text):
+    if text.isdigit() or text == "":
+        return True
+    else:
+        return False
 
 def onSelectSong(event):
     global arrSongsCoincidence
@@ -44,7 +64,7 @@ def onDoubleClickSong(event):
     selectedItem = tree.focus()
     if selectedItem:
         itemValuesSong = tree.item(selectedItem, 'values')
-        app.selectedSong = arrSongsCoincidence[int(itemValuesSong[0])]
+        app.selectedSong = arrSongsCoincidence[int(itemValuesSong[0]) - 1]
         print(f"Doble clic en la canción: {app.selectedSong}")
         print(app.selectedSong.getSong_id())
         
@@ -65,17 +85,13 @@ app.geometry("500x500")
 main = ctk.CTkFrame(app)
 main.pack(fill="both", expand=True, padx=10, pady=10)
 
-ctk.CTkLabel(main, text="Nombre de cancion").pack(pady=10)
-    
+ctk.CTkLabel(main, text="Nombre de cancion").pack(pady=10)  
 textbox = ctk.CTkTextbox(main, width=200, height=50)
 textbox.pack(pady=10)
 
 ctk.CTkLabel(main, text="Año de la canción").pack(pady=10)
-
-#validate_numeric_cmd = app.register(validate_numeric_input)
-#yearbox = ctk.CTkTextbox(main, width=200, height=50)
-#yearbox.pack(pady=10)
-#yearbox.configure(validate="key", validatecommand=(validate_numeric_cmd, "%P"))
+yearbox = ctk.CTkTextbox(main, width=200, height=30)
+yearbox.pack(pady=10)
 
 button = ctk.CTkButton(main, text="Buscar", command=getText)
 button.pack(pady=10)

@@ -62,7 +62,7 @@ class Trie:
                 node = node.children[char]
             if node.endWord:
                 for dat in node.data:
-                    if dat.year == year:
+                    if str(dat.getYear()) == str(year):
                         data.append(dat)
         return data
         
@@ -82,13 +82,15 @@ class Trie:
         with open(file, 'rb') as f:
             return pickle.load(f)
 
-""
+"""
 cancion = Song("53QF56cjZA9RTuuMZDrSA6","I Won't Give Up","Jason Mraz", "acoustic", 2012, 68, 240166)
 print(cancion)
 cancion1 = Song("53QF56cjZA9RTuuMZDrS44","I Won't Give Up","Michael Jackson", "pop", 2012, 68, 3725000)
 print(cancion1)
 cancion2 = Song("ghtF56cjZA9RTuuMZDrSA6","Its my live","Bon Jovi", "rock", 2002, 68, 2725000)
 print(cancion2)
+cancion3 = Song("53QF56cjZA9RTuuMZDrS42","I Won't Give Up","Michael Jackson", "pop", 2013, 68, 3725000)
+print(cancion3)
 
 rep = Trie()
 rep.insert(cancion.getSong_name(), cancion)
@@ -99,3 +101,4 @@ print("Busqueda por nombre y año")
 canciones = rep.getSongByYear("I Won't Give Up",2012)
 for cancion in canciones:
     print(cancion)
+"""
