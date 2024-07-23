@@ -56,14 +56,26 @@ class Trie:
         
     def getSongByYear(self, songName, year):
         data = []
-        if self.search(songName):
-            node = self.root
-            for char in songName:
-                node = node.children[char]
-            if node.endWord:
-                for dat in node.data:
-                    if str(dat.getYear()) == str(year):
-                        data.append(dat)
+        if songName:
+            if self.search(songName):
+                node = self.root
+                for char in songName:
+                    node = node.children[char]
+                if node.endWord:
+                    for dat in node.data:
+                        if str(dat.getYear()) == str(year):
+                            data.append(dat)
+        else:
+            def traverse(node):
+                if node.endWord:
+                    for dat in node.data:
+                        if str(dat.getYear()) == str(year):
+                            data.append(dat)
+                for child in node.children.values():
+                    traverse(child)
+                    
+            traverse(self.root)
+
         return data
         
     def contains(self, prefix):
