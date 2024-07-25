@@ -79,7 +79,6 @@ my_song_list = LinkedList()
 
 class SongItem_Interface:
     def __init__(self, list, song):
-        self.song = song
 
         # Elemento cancion
         self.song_item = CTkFrame(master=list, width=380, height=50, fg_color="#000000", corner_radius=0)
@@ -93,12 +92,12 @@ class SongItem_Interface:
         # Datos de la cancion
         self.specifications = CTkFrame(master=self.song_item, width=210, height=50, fg_color="#000000", corner_radius=0)
         self.specifications.pack(side="left", padx=(0, 0))
-        self.song_name = CTkLabel(master=self.specifications, text=self.song.getSong_name(), text_color="#ffffff", font=("Arial Bold", 15), width=210, height=30, anchor="w")
+        self.song_name = CTkLabel(master=self.specifications, text=song.getSong_name(), text_color="#ffffff", font=("Arial Bold", 15), width=210, height=30, anchor="w")
         self.song_name.pack(pady=(0, 0))
-        self.song_data = CTkLabel(master=self.specifications, text=self.song.getAuthor(), text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
+        self.song_data = CTkLabel(master=self.specifications, text=song.getAuthor(), text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
         self.song_data.pack(pady=(0, 0))
         # Duracion
-        self.duration = CTkLabel(master=self.song_item, text=self.song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=20, anchor="e", corner_radius=0)
+        self.duration = CTkLabel(master=self.song_item, text=song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=20, anchor="e", corner_radius=0)
         self.duration.pack(side="left", pady=(30, 0), padx=(0, 0))
         # Boton de movimiento
         self.position = CTkFrame(master=self.song_item, width=60, height=50, fg_color="#000000", corner_radius=0)
