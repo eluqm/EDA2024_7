@@ -1,4 +1,5 @@
 import csv
+import test_grafos
 from customtkinter import *
 from tkinter import *
 from tkinter import ttk
@@ -80,6 +81,9 @@ def add_song(song):
     general_Playlist = original_PlayList
     update_general_list()
 
+def view_graph():
+    test_grafos.main()
+
 
 window = CTk()
 window.title("Music Player")
@@ -93,6 +97,8 @@ home_icon_data = Image.open("src/home-icon.png")
 home_icon = CTkImage(dark_image=home_icon_data, light_image=home_icon_data, size=(40, 40))
 loupe_icon_data = Image.open("src/loupe-icon.png")
 loupe_icon = CTkImage(dark_image=loupe_icon_data, light_image=loupe_icon_data, size=(40, 40))
+graf_icon_data = Image.open("src/graf-icon.png")
+graf_icon = CTkImage(dark_image=graf_icon_data, light_image=graf_icon_data, size=(40, 40))
 
 # Menu lateral
 menu = CTkFrame(master=window, width=75, height=500, fg_color="#272727", corner_radius=0)
@@ -102,6 +108,8 @@ button_home = CTkButton(master=menu, text="", width=40, height=40, fg_color="#27
 button_home.place(relx=0.5, rely=0.1, anchor="center")
 button_search = CTkButton(master=menu, text="", width=40, height=40, fg_color="#272727", image=loupe_icon, command=lambda: print("Ventana Buscar"))
 button_search.place(relx=0.5, rely=0.24, anchor="center")
+button_graf = CTkButton(master=menu, text="", width=40, height=40, fg_color="#272727", image=graf_icon, command=view_graph)
+button_graf.place(relx=0.5, rely=0.37, anchor="center")
 
 # Reproductor
 player = CTkFrame(master=window, width=375, height=500, fg_color="#000000", corner_radius=0)
@@ -114,11 +122,11 @@ slider = CTkSlider(master=player, from_=0, to=100, number_of_steps=5, button_col
 # Lista de reproduccion
 playlist = CTkFrame(master=window, width=390, height=450, fg_color="#272727", corner_radius=0,)
 playlist.pack(expand=True, side="left", pady=(30, 20), padx=(0, 20))
-optionsPlayList = CTkFrame(master=playlist, width=390, height=40, fg_color="#4d92b2", corner_radius=0,)
+optionsPlayList = CTkFrame(master=playlist, width=390, height=40, fg_color="#1a1a1a", corner_radius=0,)
 optionsPlayList.pack(expand=True, side="top")
-namePlayList = CTkLabel(master=optionsPlayList, text="My Play List", text_color="#ffffff", fg_color="black", font=("Arial Bold", 20), width=110, height=40, anchor="w", corner_radius=0)
+namePlayList = CTkLabel(master=optionsPlayList, text="My Play List", text_color="#ffffff", font=("Arial Bold", 20), width=110, height=40, anchor="w", corner_radius=0)
 namePlayList.pack(side="left",  padx=(10, 110))
-textOrder = CTkLabel(master=optionsPlayList, text="Orden:", text_color="#ffffff", fg_color="black", font=("Times new Roman", 15), width=50, height=20, anchor="e", corner_radius=0)
+textOrder = CTkLabel(master=optionsPlayList, text="Orden:", text_color="#ffffff", font=("Times new Roman", 15), width=50, height=20, anchor="e", corner_radius=0)
 textOrder.pack(side="left",  padx=(0, 5))
 
 # Menu desplegable
