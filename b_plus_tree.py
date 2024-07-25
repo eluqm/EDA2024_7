@@ -1,5 +1,4 @@
-import pickle
-import random
+from song import Song
 
 splits = 0
 parent_splits = 0
@@ -114,11 +113,11 @@ class LeafBPlusTree(NodeBPlusTree):
 
     def __setitem__(self, key, value):
             i = self.index(key)
-            if key not in self.keys:
-                self.keys[i:i] = [key]
-                self.values[i:i] = [value]
-            else:
-                self.values[i - 1] = value
+            # if key not in self.keys:
+            self.keys[i:i] = [key]
+            self.values[i:i] = [value]
+            # else:
+            #     self.values[i - 1] = value
 
     def __delitem__(self, key):
         i = self.keys.index(key)
@@ -212,11 +211,11 @@ class BPlusTree(object):
 
     def insert(self, key, value):
         leaf = self.find(key)
-        if key in leaf.keys:
-            return False, leaf
-        else:
-            self.__setitem__(key, value, leaf)
-            return True, leaf
+        # if key in leaf.keys:
+        #     return False, leaf
+        # else:
+        self.__setitem__(key, value, leaf)
+        return True, leaf
 
     def insert_index(self,key, values: list[NodeBPlusTree]):
         parent = values[1].parent
@@ -233,6 +232,8 @@ class BPlusTree(object):
             self.insert_index(*parent.split())
 
     def delete(self, key, node: NodeBPlusTree = None):
+        if node is None:
+            node = self.find(key)
         del node[key]
 
         if len(node.keys) > self.maximum:
@@ -252,6 +253,22 @@ class BPlusTree(object):
             return leaf.keys[0], leaf.values[0]
         else:
             return None, None
+        
+    def search(self, key):
+        # Comienza en el nodo raíz
+        current_node = self.root
+        
+        # Recorre los nodos internos hasta llegar a una hoja
+        while not isinstance(current_node, LeafBPlusTree):
+            # Encuentra el índice del primer valor que es mayor o igual que la clave de búsqueda
+            index = current_node.index(key)
+            # Avanza al hijo correspondiente
+            current_node = current_node.values[index]
+        
+        # En el nodo hoja, busca la clave
+        if key in current_node.keys:
+            return current_node[key]
+        return None
 
     def show(self, node=None, file=None, _prefix="", _last=True):
         if node is None:
@@ -270,40 +287,20 @@ class BPlusTree(object):
     def readfile(self, reader):
         i = 0
         for i, line in enumerate(reader):
-            s = line.decode().split(maxsplit=1)
-            self[s[0]] = s[1]
-            if i % 1000 == 0:
-                print('Insert ' + str(i) + 'items')
-        return i + 1
+            s = line.split(',')
+            if len(s) > 1:
+                song = Song(s[0], s[1], s[2], s[3])
+                self.insert(song.title, song)
+        return i
 
-    def leftmost_leaf(self) -> LeafBPlusTree:
-        node = self.root
-        while type(node) is not LeafBPlusTree:
-            node = node.values[0]
-        return node
-    
-    def saveFile(self, filename):
-        with open(filename, 'wb') as file:
-            pickle.dump(self.root, file)
-
-    def loadFile(self, filename):
-        with open(filename, 'rb') as file:
-            self.root = pickle.load(file)
-
-def demo():
-    bplustree = BPlusTree()
-    random_list = random.sample(range(1, 100), 20)
-    for i in random_list:
-        bplustree[i] = 'test' + str(i)
-        print('Insert ' + str(i))
-        bplustree.show()
-
-    random.shuffle(random_list)
-    for i in random_list:
-        print('Delete ' + str(i))
-        bplustree.delete(i)
-        bplustree.show()
-
-
-if __name__ == '__main__':
-    demo()
+    def writefile(self, file):
+        with open(file, 'w') as f:
+            def write_node(node, depth):
+                for i, key in enumerate(node.keys):
+                    if type(node) is LeafBPlusTree:
+                        f.write(f'{key.title},{key.artist},{key.album},{key.year}\n')
+                    else:
+                        write_node(node.values[i], depth + 1)
+                if not type(node) is LeafBPlusTree:
+                    write_node(node.values[-1], depth + 1)
+            write_node(self.root, 0)
