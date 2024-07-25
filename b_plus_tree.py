@@ -1,3 +1,11 @@
+import pickle
+import random
+
+splits = 0
+parent_splits = 0
+fusions = 0
+parent_fusions = 0
+
 class NodeBPlusTree(object):
 
     def __init__(self, parent=None):
@@ -16,7 +24,7 @@ class NodeBPlusTree(object):
     
     def __setitem__(self, key, value):
         i = self.index(key)
-        self.keys[i:i] = key
+        self.keys[i:i] = [key]
         if i < len(self.values):
             self.values.pop(i)
         self.values[i:i] = value
@@ -44,6 +52,8 @@ class NodeBPlusTree(object):
         key = self.keys[mid]
         self.keys = self.keys[mid + 1:]
         self.values = self .values[mid + 1:]
+
+        return key, [left, self]
 
     def fusion(self):
         global fusions, parent_fusions
@@ -91,7 +101,7 @@ class NodeBPlusTree(object):
 class LeafBPlusTree(NodeBPlusTree):
 
     def __init__(self, parent=None, prev_node=None, next_node=None):
-        super(LeafBPlusTree, self)._init_(parent)
+        super(LeafBPlusTree, self).__init__(parent)
         self.next: LeafBPlusTree = next_node
         if next_node is not None:
             next_node.pref = self
@@ -121,7 +131,6 @@ class LeafBPlusTree(NodeBPlusTree):
 
         left = LeafBPlusTree(self.parent, self.prev, self)
         mid = len(self.keys) // 2
-        
         left.keys = self.keys[:mid]
         left.values = self.values[:mid]
 
@@ -224,8 +233,6 @@ class BPlusTree(object):
             self.insert_index(*parent.split())
 
     def delete(self, key, node: NodeBPlusTree = None):
-        if node is None:
-            node = self.find(key)
         del node[key]
 
         if len(node.keys) > self.maximum:
@@ -238,3 +245,65 @@ class BPlusTree(object):
             elif not node.borrow_key(self.minimum):
                 node.fusion()
                 self.delete(key, node.parent)
+
+    def first(self):
+        leaf = self.leftmost_leaf()
+        if leaf.keys:
+            return leaf.keys[0], leaf.values[0]
+        else:
+            return None, None
+
+    def show(self, node=None, file=None, _prefix="", _last=True):
+        if node is None:
+            node = self.root
+        print(_prefix, "`- " if _last else "|- ", node.keys, sep="", file=file)
+        _prefix += "   " if _last else "|  "
+
+        if type(node) is NodeBPlusTree:
+            for i, child in enumerate(node.values):
+                _last = (i == len(node.values) - 1)
+                self.show(child, file, _prefix, _last)
+
+    def output(self):
+        return splits, parent_splits, fusions, parent_fusions, self.depth
+
+    def readfile(self, reader):
+        i = 0
+        for i, line in enumerate(reader):
+            s = line.decode().split(maxsplit=1)
+            self[s[0]] = s[1]
+            if i % 1000 == 0:
+                print('Insert ' + str(i) + 'items')
+        return i + 1
+
+    def leftmost_leaf(self) -> LeafBPlusTree:
+        node = self.root
+        while type(node) is not LeafBPlusTree:
+            node = node.values[0]
+        return node
+    
+    def saveFile(self, filename):
+        with open(filename, 'wb') as file:
+            pickle.dump(self.root, file)
+
+    def loadFile(self, filename):
+        with open(filename, 'rb') as file:
+            self.root = pickle.load(file)
+
+def demo():
+    bplustree = BPlusTree()
+    random_list = random.sample(range(1, 100), 20)
+    for i in random_list:
+        bplustree[i] = 'test' + str(i)
+        print('Insert ' + str(i))
+        bplustree.show()
+
+    random.shuffle(random_list)
+    for i in random_list:
+        print('Delete ' + str(i))
+        bplustree.delete(i)
+        bplustree.show()
+
+
+if __name__ == '__main__':
+    demo()
