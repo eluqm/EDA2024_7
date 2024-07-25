@@ -30,3 +30,50 @@ def load_collaborations_from_csv(csv_file, max_songs=None):
                 song_count += 1
 
     return G
+
+def plot_graph(G):
+    pos = nx.spring_layout(G, seed=42)  # Posiciones para los nodos
+    edge_trace = go.Scatter(
+        x=[],
+        y=[],
+        line=dict(width=0.5, color='#888'),
+        hoverinfo='none',
+        mode='lines'
+    )
+
+    node_trace = go.Scatter(
+        x=[],
+        y=[],
+        text=[],
+        mode='markers+text',
+        hoverinfo='text',
+        marker=dict(
+            showscale=True,
+            colorscale='YlGnBu',
+            size=10,
+            colorbar=dict(thickness=15, title='Node Connections', xanchor='left', titleside='right')
+        )
+    )
+
+    for edge in G.edges():
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_trace['x'] += (x0, x1, None)
+        edge_trace['y'] += (y0, y1, None)
+
+    for node in G.nodes():
+        x, y = pos[node]
+        node_trace['x'] += (x,)
+        node_trace['y'] += (y,)
+        node_trace['text'] += (node,)
+
+    fig = go.Figure(data=[edge_trace, node_trace],
+                     layout=go.Layout(
+                         showlegend=False,
+                         hovermode='closest',
+                         margin=dict(b=0, l=0, r=0, t=0),
+                         xaxis=dict(showgrid=False, zeroline=False),
+                         yaxis=dict(showgrid=False, zeroline=False))
+                    )
+
+    fig.show()
