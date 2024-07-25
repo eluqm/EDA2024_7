@@ -304,3 +304,18 @@ class BPlusTree(object):
                 if not type(node) is LeafBPlusTree:
                     write_node(node.values[-1], depth + 1)
             write_node(self.root, 0)
+
+    def traverse_all_values(self):
+        all_values = []
+        leaf = self.leftmost_leaf()  # Obtiene la hoja más a la izquierda
+        while leaf is not None:
+            all_values.extend(leaf.values)  # Agrega todos los valores de la hoja a la lista
+            leaf = leaf.next  # Mueve a la siguiente hoja
+        return all_values
+
+
+    def leftmost_leaf(self):
+        node = self.root
+        while not isinstance(node, LeafBPlusTree):
+            node = node.values[0]  # Baja al primer hijo en el árbol
+        return node
