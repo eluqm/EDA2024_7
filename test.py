@@ -25,8 +25,8 @@ class MusicPlayer:
     def reproducir_cancion(self):
         try:
             # Configurar el cliente de Spotify con la autenticación OAuth
-            sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id='06e5f880929843ae94307601ad4f66df',
-                                                           client_secret='43e716bdc45d4b789e576840be632adb',
+            sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id='50f9d9647baf4ad6ab9047f8431a2b63',
+                                                           client_secret='7a99540fc7804778bec90a6489b02927',
                                                            redirect_uri='http://localhost:8080',
                                                            scope='user-library-read user-read-playback-state streaming'))
 
@@ -145,6 +145,6 @@ class MusicPlayer:
 
 if __name__ == "__main__":
     # Reemplaza '53QF56cjZA9RTuuMZDrSA6' con el ID de la canción que deseas reproducir desde Spotify
-    spotify_id = '69uxyAqqPIsUyTO8txoP2M'
+    spotify_id = '3Egxk5yd9Y71KsE4h8dCLU'
     player = MusicPlayer(spotify_id)
     player.reproducir_cancion()
