@@ -77,3 +77,12 @@ def plot_graph(G):
                     )
 
     fig.show()
+
+def main():
+    archivo_csv = 'BaseDatos/spotify_data.csv'
+    max_songs = 1000  # Limita el número de canciones a procesar
+    G = load_collaborations_from_csv(archivo_csv, max_songs=max_songs)
+    plot_graph(G)
+
+if __name__ == '__main__':
+    main()
