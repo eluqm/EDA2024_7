@@ -99,7 +99,9 @@ class Trie:
                             data.append(dat)
                 for child in node.children.values():
                     traverse(child)
+            
             traverse(self.root)
+
         return data
         
     def contains(self, prefix):
