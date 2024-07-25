@@ -17,7 +17,7 @@ home_icon = CTkImage(dark_image=home_icon_data, light_image=home_icon_data, size
 loupe_icon_data = Image.open("src/loupe-icon.png")
 loupe_icon = CTkImage(dark_image=loupe_icon_data, light_image=loupe_icon_data, size=(40, 40))
 
-
+# Menu lateral
 menu = CTkFrame(master=window, width=75, height=500, fg_color="#272727", corner_radius=0)
 menu.pack(expand=True, side="left")
 
@@ -26,25 +26,59 @@ button_home.place(relx=0.5, rely=0.1, anchor="center")
 button_search = CTkButton(master=menu, text="", width=40, height=40, fg_color="#272727", image=loupe_icon, command=lambda: print("Ventana Buscar"))
 button_search.place(relx=0.5, rely=0.24, anchor="center")
 
-
+# Reproductor
 player = CTkFrame(master=window, width=375, height=500, fg_color="#000000", corner_radius=0)
 player.pack(expand=True, side="left")
-
 CTkLabel(master=player, text="", image=default_icon).place(relx=0.5, rely=0.3, anchor="center")
 CTkLabel(master=player, text="Nombre canción", text_color="#ffffff", font=("Arial Bold", 24)).place(relx=0.5, rely=0.6, anchor="center")
 CTkLabel(master=player, text="Artista", text_color="#ffffff", font=("Arial Bold", 16)).place(relx=0.5, rely=0.7, anchor="center")
 slider = CTkSlider(master=player, from_=0, to=100, number_of_steps=5, button_color="#C850C0", progress_color="#C850C0").place(relx=0.5, rely=0.8, anchor="center")
 
-
-playlist = CTkScrollableFrame(master=window, width=390, height=450, fg_color="#272727", corner_radius=0,)
+# Lista de reproduccion
+playlist = CTkFrame(master=window, width=390, height=450, fg_color="#272727", corner_radius=0,)
 playlist.pack(expand=True, side="right", pady=(30, 20), padx=(0, 20))
+optionsPlayList = CTkFrame(master=playlist, width=390, height=40, fg_color="#4d92b2", corner_radius=0,)
+optionsPlayList.pack(expand=True, side="top")
+namePlayList = CTkLabel(master=optionsPlayList, text="My Play List", text_color="#ffffff", fg_color="black", font=("Arial Bold", 20), width=110, height=40, anchor="w", corner_radius=0)
+namePlayList.pack(side="left",  padx=(10, 110))
+textOrder = CTkLabel(master=optionsPlayList, text="Orden:", text_color="#ffffff", fg_color="black", font=("Times new Roman", 15), width=50, height=20, anchor="e", corner_radius=0)
+textOrder.pack(side="left",  padx=(0, 5))
+
+# Menu desplegable
+def opcion_seleccionada(opcion):
+    match opcion:
+        case "Original":
+            return print(1)
+        case "Random":
+            return print(2)
+        case "Popular ↑":
+            return print(3)
+        case "Popular ↓":
+            return print(4)
+        case "Año ↑":
+            return print(5)
+        case "Año ↓":
+            return print(6)
+        case "Duración ↑":
+            return print(7)
+        case "Duración ↓":
+            return print(8)
+        case _:
+            return "Invalid option"
+
+optionsOrder = ["Original", "Random", "Popular ↑", "Popular ↓", "Año ↑", "Año ↓", "Duración ↑", "Duración ↓"]
+drop_down_menu = CTkOptionMenu(master=optionsPlayList, values=optionsOrder, command=opcion_seleccionada, width=100, height=20)
+drop_down_menu.pack(side="left", padx=(0, 5))
+
+
+scrollist = CTkScrollableFrame(master=playlist, width=390, height=400, fg_color="#272727", corner_radius=0,)
+scrollist.pack(expand=True, side="top")
 
 ctk_frames = [] #cambiar nombre
 my_song_list = LinkedList()
 
 class SongItem_Interface:
     def __init__(self, list, song):
-        self.song = song
 
         # Elemento cancion
         self.song_item = CTkFrame(master=list, width=380, height=50, fg_color="#000000", corner_radius=0)
@@ -58,12 +92,12 @@ class SongItem_Interface:
         # Datos de la cancion
         self.specifications = CTkFrame(master=self.song_item, width=210, height=50, fg_color="#000000", corner_radius=0)
         self.specifications.pack(side="left", padx=(0, 0))
-        self.song_name = CTkLabel(master=self.specifications, text=self.song.getSong_name(), text_color="#ffffff", font=("Arial Bold", 15), width=210, height=30, anchor="w")
+        self.song_name = CTkLabel(master=self.specifications, text=song.getSong_name(), text_color="#ffffff", font=("Arial Bold", 15), width=210, height=30, anchor="w")
         self.song_name.pack(pady=(0, 0))
-        self.song_data = CTkLabel(master=self.specifications, text=self.song.getAuthor(), text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
+        self.song_data = CTkLabel(master=self.specifications, text=song.getAuthor(), text_color="#ffffff", font=("Arial Bold", 10), width=210, height=20, anchor="w")
         self.song_data.pack(pady=(0, 0))
         # Duracion
-        self.duration = CTkLabel(master=self.song_item, text=self.song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=20, anchor="e", corner_radius=0)
+        self.duration = CTkLabel(master=self.song_item, text=song.getDuration(), text_color="#ffffff", font=("Arial Bold", 10), width=60, height=20, anchor="e", corner_radius=0)
         self.duration.pack(side="left", pady=(30, 0), padx=(0, 0))
         # Boton de movimiento
         self.position = CTkFrame(master=self.song_item, width=60, height=50, fg_color="#000000", corner_radius=0)
@@ -154,7 +188,7 @@ class SongItem:
     @classmethod
     def insert_songItems(cls, index, song):
         if 0 <= index <= len(ctk_frames):
-            songItem = SongItem(playlist, song, index)
+            songItem = SongItem(scrollist, song, index)
             ctk_frames.insert(index, songItem)
             cls.reposition_songItems()
     
@@ -183,7 +217,7 @@ my_song_list.add_song(Song("53QF56cjZA9RTuuMZDrSA6", "I Won't Give Up", "Jason M
 
 current = my_song_list.head
 for _ in range(my_song_list.size):
-    ctk_frames.append(SongItem(playlist, current.song, len(ctk_frames)))
+    ctk_frames.append(SongItem(scrollist, current.song, len(ctk_frames)))
     current = current.next
 
 window.mainloop()
